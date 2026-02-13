@@ -10,6 +10,7 @@
             --dark-bg: #0a0a0a;
             --card-bg: #141414;
             --text: #e0e0e0;
+            --petal: #ffb7c5;
         }
 
         body {
@@ -25,47 +26,57 @@
             perspective: 1000px;
         }
 
-        /* Floating Background Decorations */
-        .decor {
+        /* Falling Petals Animation */
+        .petal {
             position: fixed;
+            background-color: var(--petal);
+            border-radius: 150% 0 150% 0;
+            opacity: 0.6;
             pointer-events: none;
-            z-index: 0;
-            opacity: 0.3;
-            animation: float Up 8s linear infinite;
+            z-index: 1;
+            animation: fall linear infinite;
         }
 
-        @keyframes floatUp {
-            from { transform: translateY(110vh) rotate(0deg); }
-            to { transform: translateY(-10vh) rotate(360deg); }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); }
+            100% { transform: translateY(110vh) translateX(100px) rotate(360deg); }
         }
 
         .card {
             background: var(--card-bg);
             width: 90%;
-            max-width: 450px;
+            max-width: 420px;
             min-height: 400px;
             padding: 40px;
             border-radius: 20px;
             border: 1px solid #2a2a2a;
-            box-shadow: 0 0 30px rgba(255, 77, 109, 0.1);
+            box-shadow: 0 0 40px rgba(255, 77, 109, 0.15);
             text-align: center;
             display: none;
             z-index: 10;
-            animation: openLetter 0.7s ease-out;
+            animation: openLetter 0.8s ease-out;
             flex-direction: column;
             justify-content: center;
         }
 
         @keyframes openLetter {
-            from { transform: rotateX(-30deg) scale(0.9); opacity: 0; }
-            to { transform: rotateX(0deg) scale(1); opacity: 1; }
+            from { transform: rotateY(-20deg) scale(0.9); opacity: 0; }
+            to { transform: rotateY(0deg) scale(1); opacity: 1; }
         }
 
         .card.active { display: flex; }
 
-        h1 { color: var(--pink); font-size: 1.8rem; letter-spacing: 1px; margin-bottom: 15px; }
-        p { line-height: 1.8; font-size: 1.15rem; color: #bbb; }
+        h1 { color: var(--pink); font-size: 1.8rem; letter-spacing: 1px; margin-bottom: 20px; }
+        p { line-height: 1.8; font-size: 1.1rem; color: #bbb; margin: 15px 0; }
         .highlight { color: #fff; font-weight: bold; border-bottom: 1px solid var(--pink); }
+
+        .poem {
+            font-style: italic;
+            font-size: 1.05rem;
+            color: #d0d0d0;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
 
         .btn-container {
             margin-top: 30px;
@@ -82,60 +93,45 @@
             cursor: pointer;
             font-family: 'Garamond', serif;
             font-size: 1rem;
-            transition: all 0.3s;
+            transition: 0.3s;
         }
 
-        #yesBtn {
-            background: var(--pink);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
-        }
-
-        #noBtn {
-            background: transparent;
-            color: #666;
-            border: 1px solid #444;
-            position: relative;
-        }
+        #yesBtn { background: var(--pink); color: white; border: none; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3); }
+        #noBtn { background: transparent; color: #666; border: 1px solid #444; position: relative; }
 
         .tulip-top { font-size: 3rem; margin-bottom: 10px; }
-
-        /* Music Controls */
-        .music-hint { font-size: 0.8rem; color: #555; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="https://files.catbox.moe/2nsqp6.mp3" type="audio/mpeg">
     </audio>
 
     <div class="card active" id="p1">
         <div class="tulip-top">🌷</div>
         <h1>Hey Jaanu...</h1>
-        <p>I put my heart into this. Since it's February, I have a few things to confess.</p>
-        <p class="music-hint">(Please turn up your volume first!)</p>
-        <button id="yesBtn" onclick="start()">Open Your Letters</button>
+        <p>I put my heart into this. Since it's February, there are a few things I need you to know.</p>
+        <button id="yesBtn" onclick="start()">Read My Heart</button>
     </div>
 
     <div class="card" id="p2">
         <h1>The Moment...</h1>
-        <p>I'll never forget our first date. I saw you and thought, <span class="highlight">"This is illegal."</span> How can one person be so pretty?</p>
-        <p>But when you offered me that straw with your <span class="highlight">lipstick mark</span> on it... I was done for. It was the cutest thing I've ever seen.</p>
+        <p>I'll never forget our first date. I saw you and thought, <span class="highlight">"This is illegal."</span> How can one person be so gorgeous?</p>
+        <p>Watching you with that coffee, and seeing <span class="highlight">your lipstick mark</span> on the straw... I was completely yours from that second.</p>
         <button id="yesBtn" onclick="nextPage(2)">Next Letter</button>
     </div>
 
     <div class="card" id="p3">
-        <h1>Why You?</h1>
+        <h1>My Only One</h1>
         <p>Aside from my mom, you are the only person I have ever loved this deeply. I mean every letter of that.</p>
-        <p>You own a <span class="highlight">massive part of my life</span>, and I wouldn't have it any other way.</p>
-        <button id="yesBtn" onclick="nextPage(3)">Almost there...</button>
+        <p>You don't just have a place in my life; <span class="highlight">you own it.</span></p>
+        <button id="yesBtn" onclick="nextPage(3)">Next Letter</button>
     </div>
 
     <div class="card" id="p4">
-        <h1>Teenage Dream</h1>
-        <p>You’re my forever person. My home. My favorite thought.</p>
+        <h1>A Dream Come True</h1>
+        <p>You are the miracle I never expected but always needed. My heart found its home the moment you walked in.</p>
         <p>Ready for my question?</p>
         <button id="yesBtn" onclick="nextPage(4)">Click for the Question</button>
     </div>
@@ -151,17 +147,22 @@
     <div class="card" id="success">
         <div class="tulip-top">💖🌷💖</div>
         <h1>I KNEW IT!</h1>
-        <p>You're stuck with me now! I love you more than all the tulips in the world.</p>
-        <p>Happy Valentine's Day, Jaanu! ❤️</p>
+        <div class="poem">
+            "Like a tulip in the night, you bloom so bright,<br>
+            Turning my darkest hours into morning light.<br>
+            More than a dream, more than a song,<br>
+            With you, Jaanu, is where I belong."
+        </div>
+        <p style="margin-top: 25px;">I love you forever! ❤️</p>
     </div>
 
     <script>
         const music = document.getElementById('bgMusic');
         
         function start() {
-            music.play();
+            music.play().catch(() => console.log("Audio needs interaction"));
             nextPage(1);
-            createDecor();
+            createPetals();
         }
 
         function nextPage(num) {
@@ -169,64 +170,46 @@
             document.getElementById(num === 4 ? 'p5' : 'p' + (num + 1)).classList.add('active');
         }
 
-        const jokes = [
-            "Nice try! 😜",
-            "Error 404: 'No' not found",
-            "Try again, Jaanu!",
-            "You really want to click this? 😂",
-            "Wrong button, pretty girl!",
-            "I'm too fast for you!",
-            "Is that your final answer? (Incorrect!)",
-            "Nope! 🌷"
-        ];
+        const jokes = ["Nice try! 😜", "Not happening!", "Try again, Jaanu!", "Wrong button!", "I'm too fast!", "Nope! 🌷"];
 
         function moveAndTease() {
             const noBtn = document.getElementById('noBtn');
-            
-            // Move button
             const x = Math.random() * (window.innerWidth - 120);
             const y = Math.random() * (window.innerHeight - 50);
-            
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
-            noBtn.style.zIndex = "1000";
-            
-            // Update joke
             noBtn.innerText = jokes[Math.floor(Math.random() * jokes.length)];
         }
 
-        function createDecor() {
-            const symbols = ['🌷', '❤️', '✨'];
-            for(let i=0; i<15; i++) {
-                const el = document.createElement('div');
-                el.className = 'decor';
-                el.innerHTML = symbols[Math.floor(Math.random()*symbols.length)];
-                el.style.left = Math.random() * 100 + 'vw';
-                el.style.fontSize = (Math.random() * 20 + 10) + 'px';
-                el.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                el.style.animationDelay = (Math.random() * 5) + 's';
-                document.body.appendChild(el);
+        function createPetals() {
+            for (let i = 0; i < 30; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                const size = Math.random() * 15 + 10 + 'px';
+                petal.style.width = size;
+                petal.style.height = size;
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.animationDuration = Math.random() * 3 + 4 + 's';
+                petal.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(petal);
             }
         }
 
         function celebrate() {
             document.getElementById('p5').classList.remove('active');
             document.getElementById('success').classList.add('active');
-            
-            // Final Explosion
-            for(let i=0; i<50; i++) {
+            // Hearts explosion
+            for (let i = 0; i < 50; i++) {
                 const heart = document.createElement('div');
-                heart.className = 'decor';
+                heart.className = 'petal';
                 heart.innerHTML = '💖';
+                heart.style.background = 'none';
                 heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.fontSize = '30px';
-                heart.style.opacity = '1';
-                heart.style.animationDuration = '3s';
+                heart.style.animationDuration = '2s';
                 document.body.appendChild(heart);
             }
         }
     </script>
 </body>
 </html>
-
