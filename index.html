@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Jaanu ❤️</title>
+    <style>
+        :root {
+            --accent-pink: #ff85a2;
+            --deep-black: #1a1a1a;
+            --soft-white: #ffffff;
+            --tulip-pink: #ffb7c5;
+        }
+
+        body {
+            background-color: var(--soft-white);
+            background-image: radial-gradient(var(--tulip-pink) 0.5px, transparent 0.5px);
+            background-size: 30px 30px; /* Subtle polka dot vibe */
+            font-family: 'Didot', 'serif';
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .card {
+            background: white;
+            width: 85%;
+            max-width: 450px;
+            min-height: 500px;
+            padding: 40px;
+            border-radius: 2px; /* Sharp, modern edges */
+            border: 2px solid var(--deep-black);
+            box-shadow: 10px 10px 0px var(--accent-pink);
+            text-align: center;
+            position: relative;
+            display: none;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .card.active { display: block; }
+
+        h1 { 
+            color: var(--deep-black); 
+            font-size: 1.5rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--accent-pink);
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        p { line-height: 1.8; color: var(--deep-black); font-size: 1.05rem; }
+
+        .btn-nav {
+            background: var(--deep-black);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-nav:hover {
+            background: var(--accent-pink);
+            color: var(--deep-black);
+        }
+
+        #noBtn {
+            background: white;
+            color: var(--deep-black);
+            border: 1px solid var(--deep-black);
+            position: absolute;
+        }
+
+        .tulip-icon { font-size: 3rem; margin-bottom: 10px; display: block; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .floating-tulip {
+            position: fixed;
+            z-index: 999;
+            pointer-events: none;
+            animation: float 4s linear forwards;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <iframe id="audio" width="0" height="0" src="https://www.youtube.com/embed/98WtmW-lfeE?start=69&autoplay=1" frameborder="0" allow="autoplay"></iframe>
+
+    <div class="card active" id="p1">
+        <span class="tulip-icon">🌷</span>
+        <h1>Dearest Jaanu</h1>
+        <p>I know you love tulips, so I thought I’d bring a few along for this journey.</p>
+        <p>Before we get to the big question, I have a few letters for you to open...</p>
+        <button class="btn-nav" onclick="nextPage(1)">Begin</button>
+    </div>
+
+    <div class="card" id="p2">
+        <span class="tulip-icon">🌷</span>
+        <h1>The First Sight</h1>
+        <p>I still think about our first date. I saw you and honestly, it felt illegal—how could someone be <span style="color:var(--accent-pink)">that pretty and gorgeous?</span></p>
+        <p>But the cutest part? Watching you drink coffee and then offering me the straw with <span style="color:var(--accent-pink)">your lipstick mark</span> on it. I was completely yours from that second.</p>
+        <button class="btn-nav" onclick="nextPage(2)">Read Letter #2</button>
+    </div>
+
+    <div class="card" id="p3">
+        <span class="tulip-icon">🌷</span>
+        <h1>Why You?</h1>
+        <p>You’re the only person, besides my mom, that I have ever loved with this much intensity. Every letter of that sentence is the absolute truth.</p>
+        <p>You own a huge part of my life, Jaanu. I don’t have all the words yet, but my heart knows you’re the one.</p>
+        <button class="btn-nav" onclick="nextPage(3)">Next</button>
+    </div>
+
+    <div class="card" id="p4">
+        <span class="tulip-icon">🌷</span>
+        <h1>I Love You</h1>
+        <p>I mean it with everything I am. You are my <span style="color:var(--accent-pink)">Teenage Dream</span>, my favorite person, and my home.</p>
+        <p>Are you ready for my question?</p>
+        <button class="btn-nav" onclick="nextPage(4)">The Question</button>
+    </div>
+
+    <div class="card" id="p5">
+        <span class="tulip-icon">🌷</span>
+        <h1>Will you be my Valentine, <span style="color:var(--accent-pink)">Jaanu?</span></h1>
+        <div style="margin-top: 60px; height: 100px; position: relative;">
+            <button class="btn-nav" id="yesBtn" onclick="celebrate()">Yes!</button>
+            <button class="btn-nav" id="noBtn" onmouseover="moveButton()">No</button>
+        </div>
+    </div>
+
+    <div class="card" id="success">
+        <span class="tulip-icon">🌷🌷🌷</span>
+        <h1 style="border-color: var(--deep-black);">Everything is Pink!</h1>
+        <p>I knew you couldn't say no to me! 😉</p>
+        <p>I love you more than all the tulips in the world. Let's make this Valentine's legendary.</p>
+        <p>❤️ ❤️ ❤️</p>
+    </div>
+
+    <script>
+        function nextPage(current) {
+            document.getElementById('p' + current).classList.remove('active');
+            document.getElementById('p' + (current + 1)).classList.add('active');
+            spawnTulip();
+        }
+
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            const x = Math.random() * 300 - 150;
+            const y = Math.random() * 300 - 150;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+            
+            const phrases = ["Wrong one!", "Nice try 😉", "Nope!", "Try again!", "Jaanu pls!"];
+            btn.innerHTML = phrases[Math.floor(Math.random() * phrases.length)];
+        }
+
+        function spawnTulip() {
+            for(let i=0; i<5; i++) {
+                const tulip = document.createElement('div');
+                tulip.className = 'floating-tulip';
+                tulip.innerHTML = '🌷';
+                tulip.style.left = Math.random() * 100 + 'vw';
+                tulip.style.top = '100vh';
+                tulip.style.fontSize = '2rem';
+                document.body.appendChild(tulip);
+            }
+        }
+
+        function celebrate() {
+            document.getElementById('p5').classList.remove('active');
+            document.getElementById('success').classList.add('active');
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-tulip';
+                heart.innerHTML = Math.random() > 0.5 ? '🌷' : '💖';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '100vh';
+                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                document.body.appendChild(heart);
+            }, 100);
+        }
+    </script>
+</body>
+</html>
