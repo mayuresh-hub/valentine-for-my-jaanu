@@ -8,7 +8,7 @@
         :root {
             --pink: #ff4d6d;
             --dark-bg: #050505;
-            --gold: #ffd700;
+            --glass: rgba(15, 15, 15, 0.85);
             --text: #ffffff;
         }
 
@@ -25,7 +25,7 @@
             background: radial-gradient(circle at center, #1a0a0d 0%, #050505 100%);
         }
 
-        /* Cinematic Starfield */
+        /* Starfield Background */
         #stars {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -33,7 +33,7 @@
             pointer-events: none;
         }
 
-        /* Falling Rose Petals */
+        /* Cinematic 3D Petals */
         .petal {
             position: fixed;
             background: linear-gradient(135deg, #ff4d6d, #a30021);
@@ -44,29 +44,30 @@
         }
 
         @keyframes cinematicFall {
-            0% { transform: translateY(-10vh) rotateX(0deg) rotateY(0deg); opacity: 0; }
-            10% { opacity: 0.6; }
-            100% { transform: translateY(110vh) rotateX(720deg) rotateY(360deg); opacity: 0; }
+            0% { transform: translateY(-10vh) rotateX(0deg) rotateY(0deg) scale(1); opacity: 0; }
+            15% { opacity: 0.7; }
+            100% { transform: translateY(110vh) rotateX(720deg) rotateY(360deg) scale(0.5); opacity: 0; }
         }
 
+        /* Main Card Styling */
         .card {
-            background: rgba(15, 15, 15, 0.85);
-            backdrop-filter: blur(20px);
+            background: var(--glass);
+            backdrop-filter: blur(25px);
             width: 85%;
-            max-width: 450px;
+            max-width: 480px;
             padding: 50px 40px;
             border-radius: 40px;
             border: 1px solid rgba(255, 77, 109, 0.4);
-            box-shadow: 0 0 100px rgba(255, 77, 109, 0.1);
+            box-shadow: 0 0 80px rgba(255, 77, 109, 0.15);
             text-align: center;
             display: none;
             z-index: 10;
             flex-direction: column;
-            animation: cinematicZoom 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            animation: cinematicFade 1.8s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        @keyframes cinematicZoom {
-            from { opacity: 0; transform: scale(1.2) translateY(50px); filter: blur(15px); }
+        @keyframes cinematicFade {
+            from { opacity: 0; transform: scale(1.1) translateY(30px); filter: blur(20px); }
             to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
         }
 
@@ -75,35 +76,39 @@
         h1 { 
             color: var(--pink); 
             font-size: 2.2rem; 
-            letter-spacing: 4px; 
-            text-shadow: 0 0 20px rgba(255, 77, 109, 0.6);
-            margin-bottom: 20px;
+            letter-spacing: 5px; 
+            text-shadow: 0 0 20px rgba(255, 77, 109, 0.5);
+            margin-bottom: 25px;
+            text-transform: uppercase;
         }
 
         p { 
-            line-height: 2; 
+            line-height: 1.8; 
             font-size: 1.25rem; 
             color: #d1d1d1; 
             font-weight: 300;
+            margin: 15px 0;
         }
 
+        .highlight { color: #fff; font-weight: bold; border-bottom: 1px solid var(--pink); }
+
+        /* Buttons */
         .btn-container {
             margin-top: 40px;
             display: flex;
             justify-content: center;
             gap: 20px;
             min-height: 80px;
-            position: relative;
         }
 
         button {
-            padding: 15px 40px;
-            border-radius: 50px;
+            padding: 16px 45px;
+            border-radius: 60px;
             cursor: pointer;
             font-family: 'Garamond', serif;
             font-size: 1.1rem;
             border: none;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             letter-spacing: 2px;
             text-transform: uppercase;
         }
@@ -111,14 +116,23 @@
         .main-btn { 
             background: linear-gradient(45deg, #ff4d6d, #ff8fa3);
             color: white; 
-            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.4);
+            box-shadow: 0 10px 40px rgba(255, 77, 109, 0.4);
         }
 
-        .main-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(255, 77, 109, 0.6); }
+        .main-btn:hover { transform: scale(1.05); box-shadow: 0 15px 50px rgba(255, 77, 109, 0.7); }
 
-        #noBtn { background: transparent; color: #555; border: 1px solid #333; }
+        #noBtn { background: transparent; color: #666; border: 1px solid #333; position: relative; }
 
-        .poem { font-style: italic; border-left: 2px solid var(--pink); padding-left: 20px; margin: 30px 0; color: #fff; }
+        .poem-box {
+            font-style: italic;
+            border-left: 3px solid var(--pink);
+            padding-left: 20px;
+            margin: 30px 0;
+            text-align: left;
+            background: rgba(255, 77, 109, 0.05);
+            padding: 20px;
+            border-radius: 0 20px 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -126,33 +140,35 @@
     <canvas id="stars"></canvas>
 
     <audio id="bgMusic" loop>
-        <source src="https://files.catbox.moe/2nsqp6.mp3" type="audio/mpeg">
+        <source src="song.mp3" type="audio/mpeg">
     </audio>
 
     <div class="card active" id="p1">
         <h1>For My Jaanu</h1>
-        <p>Some stories are written in the stars, but ours... ours was written in my heart the moment I saw you.</p>
-        <button class="main-btn" onclick="startMovie()">Begin Our Story</button>
+        <p>There are billions of people in this world, yet my heart only ever speaks one name.</p>
+        <p>I built this digital sanctuary just for you. Shall we begin?</p>
+        <button class="main-btn" onclick="startMovie()">Enter the Dream</button>
     </div>
 
     <div class="card" id="p2">
-        <h1>The Encounter</h1>
-        <p>That first date... I saw you and everything else faded to black. I thought, <span style="color:white; font-weight:bold;">"This is illegal."</span></p>
-        <p>Then you took a sip of your coffee, leaving that <span style="color:var(--pink)">lipstick mark</span> on the straw... and just like that, I was yours forever.</p>
+        <h1>Scene I: The First Sight</h1>
+        <p>I still go back to that first date in my head. I looked at you and thought, <span class="highlight">"This is illegal."</span></p>
+        <p>It wasn't just how you looked—it was the way you held your coffee. Seeing that <span style="color:var(--pink)">lipstick mark</span> on the straw... in that second, I was completely yours.</p>
         <button class="main-btn" onclick="nextScene(2)">Next Chapter</button>
     </div>
 
     <div class="card" id="p3">
-        <h1>My Sanctuary</h1>
-        <p>Aside from my mom, you are the only soul I have ever loved this deeply. It's a love that feels like home.</p>
-        <p>You don't just occupy my thoughts; <span style="color:var(--pink); font-weight:bold;">you own them.</span> My life is a movie, and you are every single frame.</p>
+        <h1>Scene II: The Soul</h1>
+        <p>Aside from my mom, you are the only person I have ever loved with this kind of depth. It's the kind of love that keeps me awake, dreaming of our future.</p>
+        <p>You don't just have a place in my life. <span class="highlight">You own it.</span> Every frame of my movie features you.</p>
         <button class="main-btn" onclick="nextScene(3)">Next Chapter</button>
     </div>
 
     <div class="card" id="p4">
-        <h1>The Dream</h1>
-        <p>You’re my miracle. My Teenage Dream come to life in the most beautiful way. I want to hold onto this forever.</p>
-        <button class="main-btn" onclick="nextScene(4)">The Question</button>
+        <h1>Scene III: The Memories</h1>
+        <p>From the way you laugh at my jokes to the way your eyes light up when you're happy—I notice everything. You are my <span class="highlight">Teenage Dream</span> come to life.</p>
+        <p>Every miracle I ever prayed for, I found in you.</p>
+        <button class="main-btn" onclick="nextScene(4)">The Final Question</button>
     </div>
 
     <div class="card" id="p5">
@@ -165,20 +181,20 @@
 
     <div class="card" id="success">
         <h1>Our Forever ❤️</h1>
-        <div class="poem">
+        <div class="poem-box">
             "Like a tulip in the night, you bloom so bright,<br>
             Turning my darkest hours into morning light.<br>
             More than a dream, more than a song,<br>
             With you, Jaanu, is where I belong."
         </div>
-        <p>You're stuck with me now, and I wouldn't have it any other way. I love you more than all the tulips in the world. ❤️</p>
+        <p>You're stuck with me now, and there's nowhere else I'd rather be. I love you more than all the tulips in the world.</p>
     </div>
 
     <script>
         const music = document.getElementById('bgMusic');
-        const jokes = ["Nice try! 😜", "Access Denied", "Try again, cutie!", "Nope! 🌷", "Wrong button!", "I'm too fast!", "I knew you'd try that."];
+        const jokes = ["Nice try! 😜", "Access Denied", "Try again, cutie!", "Nope! 🌷", "Wrong button!", "I'm too fast!", "Error: Only 'Yes' works"];
 
-        // Canvas Stars
+        // Starfield Canvas
         const canvas = document.getElementById('stars');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -186,19 +202,19 @@
         function initStars() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            for(let i=0; i<150; i++) {
+            for(let i=0; i<180; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 2,
-                    speed: Math.random() * 0.5
+                    size: Math.random() * 1.5,
+                    speed: Math.random() * 0.4
                 });
             }
         }
 
         function animateStars() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#fff';
+            ctx.fillStyle = '#ffffff';
             stars.forEach(s => {
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
@@ -213,7 +229,7 @@
         animateStars();
 
         function startMovie() {
-            music.play();
+            music.play().catch(() => console.log("Audio waiting for user..."));
             nextScene(1);
             setInterval(createPetal, 300);
         }
@@ -228,21 +244,20 @@
         function tease() {
             const btn = document.getElementById('noBtn');
             btn.style.position = 'fixed';
-            btn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-            btn.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+            btn.style.left = Math.random() * (window.innerWidth - 120) + 'px';
+            btn.style.top = Math.random() * (window.innerHeight - 60) + 'px';
             btn.innerText = jokes[Math.floor(Math.random() * jokes.length)];
-            // No action happens if they click "No" - it just moves again.
         }
 
         function createPetal() {
             const p = document.createElement('div');
             p.className = 'petal';
-            const size = Math.random() * 15 + 10 + 'px';
+            const size = Math.random() * 18 + 10 + 'px';
             p.style.width = size; p.style.height = size;
             p.style.left = Math.random() * 100 + 'vw';
-            p.style.animationDuration = Math.random() * 3 + 4 + 's';
+            p.style.animationDuration = Math.random() * 4 + 5 + 's';
             document.body.appendChild(p);
-            setTimeout(() => p.remove(), 6000);
+            setTimeout(() => p.remove(), 8000);
         }
 
         function celebrate() {
@@ -255,8 +270,8 @@
                 heart.style.position = 'fixed';
                 heart.style.left = Math.random() * 100 + 'vw';
                 heart.style.bottom = '-50px';
-                heart.style.fontSize = Math.random() * 20 + 20 + 'px';
-                heart.style.transition = '5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                heart.style.fontSize = Math.random() * 25 + 20 + 'px';
+                heart.style.transition = '4.5s ease-out';
                 heart.style.zIndex = '100';
                 document.body.appendChild(heart);
                 setTimeout(() => {
@@ -264,7 +279,7 @@
                     heart.style.opacity = '0';
                 }, 50);
                 setTimeout(() => heart.remove(), 5000);
-            }, 100);
+            }, 150);
         }
     </script>
 </body>
