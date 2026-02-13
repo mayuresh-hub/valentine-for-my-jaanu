@@ -6,178 +6,207 @@
     <title>For My Jaanu ❤️</title>
     <style>
         :root {
-            --accent-pink: #ff85a2;
-            --deep-black: #1a1a1a;
-            --soft-white: #ffffff;
-            --tulip-pink: #ffb7c5;
+            --pink: #ff4d6d;
+            --dark-bg: #0a0a0a;
+            --card-bg: #141414;
+            --text: #e0e0e0;
         }
 
         body {
-            background-color: var(--soft-white);
-            background-image: radial-gradient(var(--tulip-pink) 0.5px, transparent 0.5px);
-            background-size: 30px 30px; /* Subtle polka dot vibe */
-            font-family: 'Didot', 'serif';
+            background-color: var(--dark-bg);
+            color: var(--text);
+            font-family: 'Garamond', serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* Floating Background Decorations */
+        .decor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            animation: float Up 8s linear infinite;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(0deg); }
+            to { transform: translateY(-10vh) rotate(360deg); }
         }
 
         .card {
-            background: white;
-            width: 85%;
+            background: var(--card-bg);
+            width: 90%;
             max-width: 450px;
-            min-height: 500px;
+            min-height: 400px;
             padding: 40px;
-            border-radius: 2px; /* Sharp, modern edges */
-            border: 2px solid var(--deep-black);
-            box-shadow: 10px 10px 0px var(--accent-pink);
+            border-radius: 20px;
+            border: 1px solid #2a2a2a;
+            box-shadow: 0 0 30px rgba(255, 77, 109, 0.1);
             text-align: center;
-            position: relative;
             display: none;
-            animation: slideIn 0.6s ease-out;
+            z-index: 10;
+            animation: openLetter 0.7s ease-out;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .card.active { display: block; }
-
-        h1 { 
-            color: var(--deep-black); 
-            font-size: 1.5rem; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-            border-bottom: 2px solid var(--accent-pink);
-            display: inline-block;
-            margin-bottom: 30px;
+        @keyframes openLetter {
+            from { transform: rotateX(-30deg) scale(0.9); opacity: 0; }
+            to { transform: rotateX(0deg) scale(1); opacity: 1; }
         }
 
-        p { line-height: 1.8; color: var(--deep-black); font-size: 1.05rem; }
+        .card.active { display: flex; }
 
-        .btn-nav {
-            background: var(--deep-black);
+        h1 { color: var(--pink); font-size: 1.8rem; letter-spacing: 1px; margin-bottom: 15px; }
+        p { line-height: 1.8; font-size: 1.15rem; color: #bbb; }
+        .highlight { color: #fff; font-weight: bold; border-bottom: 1px solid var(--pink); }
+
+        .btn-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            min-height: 60px;
+        }
+
+        button {
+            padding: 12px 28px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Garamond', serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        #yesBtn {
+            background: var(--pink);
             color: white;
             border: none;
-            padding: 12px 30px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: 0.3s;
-            margin-top: 20px;
-        }
-
-        .btn-nav:hover {
-            background: var(--accent-pink);
-            color: var(--deep-black);
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
         }
 
         #noBtn {
-            background: white;
-            color: var(--deep-black);
-            border: 1px solid var(--deep-black);
-            position: absolute;
+            background: transparent;
+            color: #666;
+            border: 1px solid #444;
+            position: relative;
         }
 
-        .tulip-icon { font-size: 3rem; margin-bottom: 10px; display: block; }
+        .tulip-top { font-size: 3rem; margin-bottom: 10px; }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .floating-tulip {
-            position: fixed;
-            z-index: 999;
-            pointer-events: none;
-            animation: float 4s linear forwards;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
+        /* Music Controls */
+        .music-hint { font-size: 0.8rem; color: #555; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <iframe id="audio" width="0" height="0" src="https://www.youtube.com/embed/98WtmW-lfeE?start=69&autoplay=1" frameborder="0" allow="autoplay"></iframe>
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="card active" id="p1">
-        <span class="tulip-icon">🌷</span>
-        <h1>Dearest Jaanu</h1>
-        <p>I know you love tulips, so I thought I’d bring a few along for this journey.</p>
-        <p>Before we get to the big question, I have a few letters for you to open...</p>
-        <button class="btn-nav" onclick="nextPage(1)">Begin</button>
+        <div class="tulip-top">🌷</div>
+        <h1>Hey Jaanu...</h1>
+        <p>I put my heart into this. Since it's February, I have a few things to confess.</p>
+        <p class="music-hint">(Please turn up your volume first!)</p>
+        <button id="yesBtn" onclick="start()">Open Your Letters</button>
     </div>
 
     <div class="card" id="p2">
-        <span class="tulip-icon">🌷</span>
-        <h1>The First Sight</h1>
-        <p>I still think about our first date. I saw you and honestly, it felt illegal—how could someone be <span style="color:var(--accent-pink)">that pretty and gorgeous?</span></p>
-        <p>But the cutest part? Watching you drink coffee and then offering me the straw with <span style="color:var(--accent-pink)">your lipstick mark</span> on it. I was completely yours from that second.</p>
-        <button class="btn-nav" onclick="nextPage(2)">Read Letter #2</button>
+        <h1>The Moment...</h1>
+        <p>I'll never forget our first date. I saw you and thought, <span class="highlight">"This is illegal."</span> How can one person be so pretty?</p>
+        <p>But when you offered me that straw with your <span class="highlight">lipstick mark</span> on it... I was done for. It was the cutest thing I've ever seen.</p>
+        <button id="yesBtn" onclick="nextPage(2)">Next Letter</button>
     </div>
 
     <div class="card" id="p3">
-        <span class="tulip-icon">🌷</span>
         <h1>Why You?</h1>
-        <p>You’re the only person, besides my mom, that I have ever loved with this much intensity. Every letter of that sentence is the absolute truth.</p>
-        <p>You own a huge part of my life, Jaanu. I don’t have all the words yet, but my heart knows you’re the one.</p>
-        <button class="btn-nav" onclick="nextPage(3)">Next</button>
+        <p>Aside from my mom, you are the only person I have ever loved this deeply. I mean every letter of that.</p>
+        <p>You own a <span class="highlight">massive part of my life</span>, and I wouldn't have it any other way.</p>
+        <button id="yesBtn" onclick="nextPage(3)">Almost there...</button>
     </div>
 
     <div class="card" id="p4">
-        <span class="tulip-icon">🌷</span>
-        <h1>I Love You</h1>
-        <p>I mean it with everything I am. You are my <span style="color:var(--accent-pink)">Teenage Dream</span>, my favorite person, and my home.</p>
-        <p>Are you ready for my question?</p>
-        <button class="btn-nav" onclick="nextPage(4)">The Question</button>
+        <h1>Teenage Dream</h1>
+        <p>You’re my forever person. My home. My favorite thought.</p>
+        <p>Ready for my question?</p>
+        <button id="yesBtn" onclick="nextPage(4)">Click for the Question</button>
     </div>
 
     <div class="card" id="p5">
-        <span class="tulip-icon">🌷</span>
-        <h1>Will you be my Valentine, <span style="color:var(--accent-pink)">Jaanu?</span></h1>
-        <div style="margin-top: 60px; height: 100px; position: relative;">
-            <button class="btn-nav" id="yesBtn" onclick="celebrate()">Yes!</button>
-            <button class="btn-nav" id="noBtn" onmouseover="moveButton()">No</button>
+        <h1>Will you be my Valentine, Jaanu?</h1>
+        <div class="btn-container">
+            <button id="yesBtn" onclick="celebrate()">Yes!</button>
+            <button id="noBtn" onmouseover="moveAndTease()">No</button>
         </div>
     </div>
 
     <div class="card" id="success">
-        <span class="tulip-icon">🌷🌷🌷</span>
-        <h1 style="border-color: var(--deep-black);">Everything is Pink!</h1>
-        <p>I knew you couldn't say no to me! 😉</p>
-        <p>I love you more than all the tulips in the world. Let's make this Valentine's legendary.</p>
-        <p>❤️ ❤️ ❤️</p>
+        <div class="tulip-top">💖🌷💖</div>
+        <h1>I KNEW IT!</h1>
+        <p>You're stuck with me now! I love you more than all the tulips in the world.</p>
+        <p>Happy Valentine's Day, Jaanu! ❤️</p>
     </div>
 
     <script>
-        function nextPage(current) {
-            document.getElementById('p' + current).classList.remove('active');
-            document.getElementById('p' + (current + 1)).classList.add('active');
-            spawnTulip();
+        const music = document.getElementById('bgMusic');
+        
+        function start() {
+            music.play();
+            nextPage(1);
+            createDecor();
         }
 
-        function moveButton() {
-            const btn = document.getElementById('noBtn');
-            const x = Math.random() * 300 - 150;
-            const y = Math.random() * 300 - 150;
-            btn.style.transform = `translate(${x}px, ${y}px)`;
+        function nextPage(num) {
+            document.getElementById('p' + num).classList.remove('active');
+            document.getElementById(num === 4 ? 'p5' : 'p' + (num + 1)).classList.add('active');
+        }
+
+        const jokes = [
+            "Nice try! 😜",
+            "Error 404: 'No' not found",
+            "Try again, Jaanu!",
+            "You really want to click this? 😂",
+            "Wrong button, pretty girl!",
+            "I'm too fast for you!",
+            "Is that your final answer? (Incorrect!)",
+            "Nope! 🌷"
+        ];
+
+        function moveAndTease() {
+            const noBtn = document.getElementById('noBtn');
             
-            const phrases = ["Wrong one!", "Nice try 😉", "Nope!", "Try again!", "Jaanu pls!"];
-            btn.innerHTML = phrases[Math.floor(Math.random() * phrases.length)];
+            // Move button
+            const x = Math.random() * (window.innerWidth - 120);
+            const y = Math.random() * (window.innerHeight - 50);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+            noBtn.style.zIndex = "1000";
+            
+            // Update joke
+            noBtn.innerText = jokes[Math.floor(Math.random() * jokes.length)];
         }
 
-        function spawnTulip() {
-            for(let i=0; i<5; i++) {
-                const tulip = document.createElement('div');
-                tulip.className = 'floating-tulip';
-                tulip.innerHTML = '🌷';
-                tulip.style.left = Math.random() * 100 + 'vw';
-                tulip.style.top = '100vh';
-                tulip.style.fontSize = '2rem';
-                document.body.appendChild(tulip);
+        function createDecor() {
+            const symbols = ['🌷', '❤️', '✨'];
+            for(let i=0; i<15; i++) {
+                const el = document.createElement('div');
+                el.className = 'decor';
+                el.innerHTML = symbols[Math.floor(Math.random()*symbols.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                el.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                el.style.animationDelay = (Math.random() * 5) + 's';
+                document.body.appendChild(el);
             }
         }
 
@@ -185,16 +214,19 @@
             document.getElementById('p5').classList.remove('active');
             document.getElementById('success').classList.add('active');
             
-            setInterval(() => {
+            // Final Explosion
+            for(let i=0; i<50; i++) {
                 const heart = document.createElement('div');
-                heart.className = 'floating-tulip';
-                heart.innerHTML = Math.random() > 0.5 ? '🌷' : '💖';
+                heart.className = 'decor';
+                heart.innerHTML = '💖';
                 heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.top = '100vh';
-                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                heart.style.fontSize = '30px';
+                heart.style.opacity = '1';
+                heart.style.animationDuration = '3s';
                 document.body.appendChild(heart);
-            }, 100);
+            }
         }
     </script>
 </body>
 </html>
+
